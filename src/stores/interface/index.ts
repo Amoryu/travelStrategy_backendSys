@@ -2,6 +2,7 @@
 export interface GlobalState {
 	token: string;
 	userInfo: any;
+	signInName: string;
 	assemblySize: AssemblySizeType;
 	language: string;
 	themeConfig: ThemeConfigProps;

@@ -1,7 +1,7 @@
 <template>
 	<div class="areabox">
 		<el-select
-			v-model="props.province"
+			:model-value="props.province"
 			placeholder="请选择省"
 			:style="style"
 			@change="e => handleSelect('Province', e)"
@@ -9,7 +9,7 @@
 			<el-option v-for="(item, i) in regionData" :key="i" :label="item.label" :value="item.value" />
 		</el-select>
 		<el-select
-			v-model="props.city"
+			:model-value="props.city"
 			placeholder="请选择市"
 			:disabled="!props.province || cityList.length == 0"
 			:style="style"
@@ -18,7 +18,7 @@
 			<el-option v-for="(item, i) in cityList" :key="i" :label="item.label" :value="item.value" />
 		</el-select>
 		<el-select
-			v-model="props.area"
+			:model-value="props.area"
 			placeholder="请选择区"
 			:style="style"
 			:disabled="!props.province || !props.city || areaList.length == 0"
@@ -65,7 +65,7 @@ const handleSelect = (type: "Province" | "City" | "Area", e: events) => {
 const style = computed(() => ({ width: `${props.width}px`, marginRight: `${props.gap}px` }));
 //二级城市列表
 const cityList: ComputedRef<AreaList[]> = computed((): AreaList[] => {
-	let temp = regionData.find((item: any) => item.value == props.province);
+	const temp = regionData.find((item: any) => item.value == props.province);
 	return temp && temp.children ? temp.children : [];
 });
 
@@ -73,10 +73,9 @@ const cityList: ComputedRef<AreaList[]> = computed((): AreaList[] => {
 const areaList: ComputedRef<AreaList[]> = computed((): AreaList[] => {
 	if (!props.city || cityList.value.length == 0) {
 		return [];
-	} else {
-		let temp = cityList.value.find((item: any) => item.value == props.city);
-		return temp && temp.children ? temp.children : [];
 	}
+	const temp = cityList.value.find((item: any) => item.value == props.city);
+	return temp && temp.children ? temp.children : [];
 });
 </script>
 <style scoped>

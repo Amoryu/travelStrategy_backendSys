@@ -44,9 +44,9 @@
 		<el-drawer z-index="99" v-model="isViewInfo" title="攻略详情" direction="rtl" size="50%">
 			<MyDescription :data="drawerData" :items="items" :column="1">
 				<template #location>
-					<span v-if="drawerData.provinceName !== 'null'">{{ `${drawerData.provinceName}` }}</span>
-					<span v-if="drawerData.cityName !== 'null'">{{ ` / ${drawerData.cityName}` }}</span>
-					<span v-if="drawerData.areaName !== 'null'">{{ ` / ${drawerData.areaName}` }}</span>
+					<span v-if="drawerData.province !== 'null'">{{ `${CodeToText[drawerData.province]}` }}</span>
+					<span v-if="drawerData.city !== 'null'">{{ ` / ${CodeToText[drawerData.city]}` }}</span>
+					<span v-if="drawerData.area !== 'null'">{{ ` / ${CodeToText[drawerData.area]}` }}</span>
 				</template>
 				<template #coverImg>
 					<UploadImg :image-url="drawerData.coverImg" :disabled="true" />

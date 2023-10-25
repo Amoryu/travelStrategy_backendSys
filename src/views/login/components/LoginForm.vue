@@ -1,5 +1,5 @@
 <template>
-	<el-form ref="loginFormRef" :model="loginForm" :rules="loginRules" size="large">
+	<el-form ref="loginFormRef" :model="loginForm" size="large">
 		<el-form-item prop="username">
 			<el-input v-model="loginForm.username" placeholder="请输入用户名">
 				<template #prefix>
@@ -56,14 +56,12 @@ const globalStore = GlobalStore();
 
 // 定义 formRef（校验规则）
 type FormInstance = InstanceType<typeof ElForm>;
+
 const loginFormRef = ref<FormInstance>();
-const loginRules = reactive({
-	username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
-	password: [{ required: true, message: "请输入密码", trigger: "blur" }]
-});
 
 const loading = ref(false);
 const loginForm = reactive<Login.ReqLoginForm>({ username: "", password: "" });
+
 const login = (formEl: FormInstance | undefined) => {
 	if (!formEl) return;
 	formEl.validate(async valid => {
@@ -104,7 +102,11 @@ const resetForm = (formEl: FormInstance | undefined) => {
 };
 
 onMounted(() => {
+	resetForm(loginFormRef.value);
 	// 监听enter事件（调用登录）
+	if (globalStore.signInName) {
+		loginForm.username = globalStore.signInName;
+	}
 	document.onkeydown = (e: any) => {
 		e = window.event || e;
 		if (e.code === "Enter" || e.code === "enter" || e.code === "NumpadEnter") {

@@ -1,29 +1,31 @@
-import { defineStore, createPinia } from 'pinia'
-import { GlobalState, ThemeConfigProps, AssemblySizeType } from './interface'
-import { DEFAULT_PRIMARY } from '@/config/config'
-import piniaPersistConfig from '@/config/piniaPersist'
-import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import { defineStore, createPinia } from "pinia";
+import { GlobalState, ThemeConfigProps, AssemblySizeType } from "./interface";
+import { DEFAULT_PRIMARY } from "@/config/config";
+import piniaPersistConfig from "@/config/piniaPersist";
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 
 // defineStore 调用后返回一个函数，调用该函数获得 Store 实体
 export const GlobalStore = defineStore({
 	// id: 必须的，在所有 Store 中唯一
-	id: 'GlobalState',
+	id: "GlobalState",
 	// state: 返回对象的函数
 	state: (): GlobalState => ({
 		// token
-		token: '',
+		token: "",
 		// userInfo
-		userInfo: { name: '薛定猫' },
+		userInfo: { name: "薛定猫" },
 		// element组件大小
-		assemblySize: 'default',
+		assemblySize: "default",
+		// 注册用户名
+		signInName: "",
 		// language
-		language: '',
+		language: "",
 		// themeConfig
 		themeConfig: {
 			// 当前页面是否全屏
 			maximize: false,
 			// 布局切换 ==>  纵向：vertical | 经典：classic | 横向：transverse | 分栏：columns
-			layout: 'vertical',
+			layout: "vertical",
 			// 默认 primary 主题颜色
 			primary: DEFAULT_PRIMARY,
 			// 深色模式
@@ -43,37 +45,41 @@ export const GlobalStore = defineStore({
 			// 标签页图标
 			tabsIcon: true,
 			// 页脚
-			footer: true,
-		},
+			footer: true
+		}
 	}),
 	getters: {},
 	actions: {
 		// setToken
 		setToken(token: string) {
-			this.token = token
+			this.token = token;
 		},
 		// setUserInfo
 		setUserInfo(userInfo: any) {
-			this.userInfo = userInfo
+			this.userInfo = userInfo;
+		},
+		// setUserInfo
+		setSignInName(name: any) {
+			this.signInName = name;
 		},
 		// setAssemblySizeSize
 		setAssemblySizeSize(assemblySize: AssemblySizeType) {
-			this.assemblySize = assemblySize
+			this.assemblySize = assemblySize;
 		},
 		// updateLanguage
 		updateLanguage(language: string) {
-			this.language = language
+			this.language = language;
 		},
 		// setThemeConfig
 		setThemeConfig(themeConfig: ThemeConfigProps) {
-			this.themeConfig = themeConfig
-		},
+			this.themeConfig = themeConfig;
+		}
 	},
-	persist: piniaPersistConfig('GlobalState'),
-})
+	persist: piniaPersistConfig("GlobalState")
+});
 
 // piniaPersist(持久化)
-const pinia = createPinia()
-pinia.use(piniaPluginPersistedstate)
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
 
-export default pinia
+export default pinia;

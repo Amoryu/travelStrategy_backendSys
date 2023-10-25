@@ -10,42 +10,38 @@
 				<el-button type="success" @click="save">保存</el-button>
 			</el-form-item>
 		</el-form>
-
-
 	</el-dialog>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive } from "vue";
 import { GlobalStore } from "@/stores";
-import type { FormRules } from 'element-plus'
-import { changeUsername } from '@/api/modules/user'
-import { ElMessage } from 'element-plus'
+import type { FormRules } from "element-plus";
+import { changeUsername } from "@/api/modules/user";
+import { ElMessage } from "element-plus";
 
-
-const isEditing = ref(false)
+const isEditing = ref(false);
 const dialogVisible = ref(false);
-const globalStore = GlobalStore()
+const globalStore = GlobalStore();
 
-const userInfo = ref({})
-const originUsername = ref('')
+const userInfo = ref({});
+const originUsername = ref("");
 
 const validatePass = (rule: any, value: any, callback: any) => {
-	if (value === '') {
-		callback(new Error('用户名不能为空'))
+	if (value === "") {
+		callback(new Error("用户名不能为空"));
 	} else {
-		callback()
+		callback();
 	}
-}
+};
 
 const rules = reactive<FormRules>({
-	username: [{ validator: validatePass, trigger: 'blur' }],
-
-})
+	username: [{ validator: validatePass, trigger: "blur" }]
+});
 
 const edit = () => {
-	isEditing.value = true
-}
+	isEditing.value = true;
+};
 
 const save = () => {
 	changeUsername({ userInfo: userInfo.value, originUsername: originUsername.value }).then(res => {
@@ -54,17 +50,16 @@ const save = () => {
 				type: "success",
 				message: `${res.msg}!`
 			});
-			dialogVisible.value = true
-			isEditing.value = false
+			dialogVisible.value = true;
+			isEditing.value = false;
 		}
-	})
-}
+	});
+};
 
 const initData = () => {
-	userInfo.value = globalStore.userInfo
-	console.log(userInfo.value)
-	originUsername.value = userInfo.value.username
-}
+	userInfo.value = globalStore.userInfo;
+	originUsername.value = userInfo.value.username;
+};
 
 // openDialog
 const openDialog = () => {
@@ -73,8 +68,7 @@ const openDialog = () => {
 
 defineExpose({ openDialog });
 
-
-initData()
+initData();
 </script>
 
 <style>

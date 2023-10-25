@@ -1,64 +1,64 @@
-import { defineConfig, loadEnv, ConfigEnv, UserConfig } from 'vite'
-import { createHtmlPlugin } from 'vite-plugin-html'
-import vue from '@vitejs/plugin-vue'
-import { resolve } from 'path'
-import { wrapperEnv } from './src/utils/getEnv'
-import { visualizer } from 'rollup-plugin-visualizer'
-import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
-import viteCompression from 'vite-plugin-compression'
-import vueSetupExtend from 'vite-plugin-vue-setup-extend-plus'
-import vueJsx from '@vitejs/plugin-vue-jsx'
-import importToCDN from 'vite-plugin-cdn-import'
+import { defineConfig, loadEnv, ConfigEnv, UserConfig } from "vite";
+import { createHtmlPlugin } from "vite-plugin-html";
+import vue from "@vitejs/plugin-vue";
+import { resolve } from "path";
+import { wrapperEnv } from "./src/utils/getEnv";
+import { visualizer } from "rollup-plugin-visualizer";
+import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
+import viteCompression from "vite-plugin-compression";
+import vueSetupExtend from "vite-plugin-vue-setup-extend-plus";
+import vueJsx from "@vitejs/plugin-vue-jsx";
+import importToCDN from "vite-plugin-cdn-import";
 
 // @see: https://vitejs.dev/config/
 export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
-	const env = loadEnv(mode, process.cwd())
-	const viteEnv = wrapperEnv(env)
+	const env = loadEnv(mode, process.cwd());
+	const viteEnv = wrapperEnv(env);
 
 	return {
-		base: './',
+		base: "./",
 		resolve: {
 			alias: {
-				'@': resolve(__dirname, './src'),
-				'vue-i18n': 'vue-i18n/dist/vue-i18n.cjs.js',
-			},
+				"@": resolve(__dirname, "./src"),
+				"vue-i18n": "vue-i18n/dist/vue-i18n.cjs.js"
+			}
 		},
 		css: {
 			preprocessorOptions: {
 				scss: {
-					additionalData: `@import "@/styles/var.scss";`,
-				},
-			},
+					additionalData: `@import "@/styles/var.scss";`
+				}
+			}
 		},
 		server: {
 			// 服务器主机名，如果允许外部访问，可设置为 "0.0.0.0"
-			host: '0.0.0.0',
+			host: "0.0.0.0",
 			port: viteEnv.VITE_PORT,
 			open: viteEnv.VITE_OPEN,
 			cors: true,
 			// 跨域代理配置
 			proxy: {
-				'/api': {
+				"/api": {
 					// target: 'https://express-kgp0-48586-8-1312822569.sh.run.tcloudbase.com',
-					target: 'http://127.0.0.1:8098',
+					target: "http://127.0.0.1:8098",
 					changeOrigin: true,
-					rewrite: (path) => path.replace(/^\/api/, ''),
-				},
-			},
+					rewrite: path => path.replace(/^\/api/, "")
+				}
+			}
 		},
 		plugins: [
 			vue(),
 			createHtmlPlugin({
 				inject: {
 					data: {
-						title: viteEnv.VITE_GLOB_APP_TITLE,
-					},
-				},
+						title: viteEnv.VITE_GLOB_APP_TITLE
+					}
+				}
 			}),
 			// * 使用 svg 图标
 			createSvgIconsPlugin({
-				iconDirs: [resolve(process.cwd(), 'src/assets/icons')],
-				symbolId: 'icon-[dir]-[name]',
+				iconDirs: [resolve(process.cwd(), "src/assets/icons")],
+				symbolId: "icon-[dir]-[name]"
 			}),
 			// * EsLint 报错信息显示在浏览器界面上
 			// eslintPlugin(),
@@ -74,33 +74,30 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
 					verbose: true,
 					disable: false,
 					threshold: 10240,
-					algorithm: 'gzip',
-					ext: '.gz',
+					algorithm: "gzip",
+					ext: ".gz"
 				}),
 			// * cdn 引入（vue按需引入会导致依赖vue的插件出现问题(列如:pinia/vuex)）
 			importToCDN({
-				modules: [
-
-				],
-			}),
-
+				modules: []
+			})
 		],
 		// * 打包去除 console.log && debugger
 		esbuild: {
-			pure: viteEnv.VITE_DROP_CONSOLE ? ['console.log', 'debugger'] : [],
+			pure: viteEnv.VITE_DROP_CONSOLE ? ["console.log", "debugger"] : []
 		},
 		build: {
-			outDir: 'dist',
-			minify: 'esbuild',
+			outDir: "dist",
+			minify: "esbuild",
 			chunkSizeWarningLimit: 1500,
 			rollupOptions: {
 				output: {
 					// Static resource classification and packaging
-					chunkFileNames: 'assets/js/[name]-[hash].js',
-					entryFileNames: 'assets/js/[name]-[hash].js',
-					assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
-				},
-			},
-		},
-	}
-})
+					chunkFileNames: "assets/js/[name]-[hash].js",
+					entryFileNames: "assets/js/[name]-[hash].js",
+					assetFileNames: "assets/[ext]/[name]-[hash].[ext]"
+				}
+			}
+		}
+	};
+});

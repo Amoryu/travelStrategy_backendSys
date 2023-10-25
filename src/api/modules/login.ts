@@ -9,6 +9,11 @@ import http from "@/api";
 /**
  * @name 登录模块
  */
+const signInApi = (params: Object) => {
+	return http.post(PORT1 + `/user/signin`, params); // 正常 post json 请求  ==>  application/json
+	// return http.get<Login.ResLogin>(`/api/login`) // 正常 post json 请求  ==>  application/json
+};
+
 // * 用户登录
 const loginApi = (params: Object) => {
 	return http.post(PORT1 + `/user/login`, params); // 正常 post json 请求  ==>  application/json
@@ -30,4 +35,4 @@ const getAuthMenuListApi = (menuAuth: String) => {
 // * 用户退出登录
 const logoutApi = () => http.post(PORT1 + `/user/logout`);
 
-export { loginApi, getAuthButtonListApi, getAuthMenuListApi, logoutApi };
+export { loginApi, signInApi, getAuthButtonListApi, getAuthMenuListApi, logoutApi };
