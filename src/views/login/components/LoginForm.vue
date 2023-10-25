@@ -104,9 +104,7 @@ const resetForm = (formEl: FormInstance | undefined) => {
 onMounted(() => {
 	resetForm(loginFormRef.value);
 	// 监听enter事件（调用登录）
-	if (globalStore.signInName) {
-		loginForm.username = globalStore.signInName;
-	}
+
 	document.onkeydown = (e: any) => {
 		e = window.event || e;
 		if (e.code === "Enter" || e.code === "enter" || e.code === "NumpadEnter") {
